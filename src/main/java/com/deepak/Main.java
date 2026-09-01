@@ -44,5 +44,24 @@ public class Main {
             System.out.println("Failed to fetch the Student");
             e.printStackTrace();
         }
+
+
+        try{
+            Student s = studentDAO.getStudentByRollNo("210823104030");
+            if(s!=null){
+                System.out.println();
+                System.out.println(
+                                s.getRollNo()+" | "
+                                + s.getName()+" | "
+                                +s.getEmail()+" | "
+                                +s.getPhoneNo()+" | "
+                                +s.getDepartmentId()
+                );
+            }
+            else System.out.println("No Student Found");
+        }catch (SQLException e){
+            System.out.println("No Student Found!");
+            e.printStackTrace();
+        }
     }
 }

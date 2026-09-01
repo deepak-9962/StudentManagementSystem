@@ -53,4 +53,32 @@ public class StudentDAO {
         }
         return students;
     }
+
+    public Student getStudentByRollNo(String rollNo) throws SQLException{
+
+        String sql = """
+                select * from students
+                where roll_no = ?
+                """;
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql);
+
+        ps.setString(1, rollNo);
+
+        ResultSet rs = ps.executeQuery();
+
+        if(rs.next()){
+            Student student = new Student(
+                    rs.getString("roll_no"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone_no"),
+                    rs.getInt("department_id")
+            );
+            return student;
+        }
+        return null;
+
+
+    }
 }
