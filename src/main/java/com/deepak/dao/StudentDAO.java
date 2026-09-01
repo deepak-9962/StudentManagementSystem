@@ -4,6 +4,8 @@ import com.deepak.util.DatabaseConnection;
 import com.deepak.model.Student;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class StudentDAO {
     public void addStudent(Student student) throws SQLException {
@@ -26,7 +28,9 @@ public class StudentDAO {
         int rowsAffected = ps.executeUpdate();
     }
 
-    public void getAllStudents() throws SQLException{
+    public List<Student> getAllStudents() throws SQLException{
+
+        List<Student> students = new ArrayList<>();
         String sql = """
                 select * from students
                 """;
@@ -37,14 +41,16 @@ public class StudentDAO {
         ResultSet rs = ps.executeQuery();
 
         while(rs.next()){
-            String rollNo = rs.getString("roll_no");
-            String name = rs.getString("name");
-            String email = rs.getString("email");
-            String phoneNo = rs.getString("phone_no");
-            int departmentId = rs.getInt("department_id");
-
-            System.out.println(rollNo+" | "+name+" | "+email+" | "+phoneNo+" | "+departmentId);
+            Student student = new Student(
+                    rs.getString("roll_no"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone_no"),
+                    rs.getInt("department_id")
+            );
+            students.add(student);
 
         }
+        return students;
     }
 }

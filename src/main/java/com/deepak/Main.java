@@ -3,6 +3,7 @@ import com.deepak.model.Student;
 import com.deepak.util.DatabaseConnection;
 import com.deepak.dao.StudentDAO;
 import java.sql.*;
+import java.util.List;
 
 public class Main {
 
@@ -28,7 +29,17 @@ public class Main {
 
 
         try {
-            studentDAO.getAllStudents();
+            List<Student> students = studentDAO.getAllStudents();
+
+            for (Student s : students){
+                System.out.println(
+                        s.getRollNo()+" | "
+                        + s.getName()+" | "
+                        +s.getEmail()+" | "
+                        +s.getPhoneNo()+" | "
+                        +s.getDepartmentId()
+                );
+            }
         }catch (SQLException e){
             System.out.println("Failed to fetch the Student");
             e.printStackTrace();
