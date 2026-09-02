@@ -81,4 +81,24 @@ public class StudentDAO {
 
 
     }
+
+    public void updateStudent(Student student) throws SQLException{
+        String sql = """
+                update students 
+                set name = ?, email = ?,phone_no = ?, department_id = ?
+                where roll_no = ? 
+                """;
+
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql);
+
+        ps.setString(1, student.getName());
+        ps.setString(2, student.getEmail());
+        ps.setString(3, student.getPhoneNo());
+        ps.setInt(4, student.getDepartmentId());
+        ps.setString(5,student.getRollNo());
+
+        int rowsAffected = ps.executeUpdate();
+        System.out.println("Rows Updated:" + rowsAffected);
+    }
 }

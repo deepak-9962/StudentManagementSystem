@@ -9,24 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Student student = new Student(
-                "210823104033",
-                "Akash",
-                "akash@gmail.com",
-                "8778022435",
-                1
-        );
-
         StudentDAO studentDAO = new StudentDAO();
-
-//        try {
-//            studentDAO.addStudent(student);
-//            System.out.println("Student Added Successfully");
-//        }catch(SQLException e){
-//            System.out.println("Failed to add the Student");
-//            e.printStackTrace();
-//        }
-
 
         try {
             List<Student> students = studentDAO.getAllStudents();
@@ -61,6 +44,19 @@ public class Main {
             else System.out.println("No Student Found");
         }catch (SQLException e){
             System.out.println("No Student Found!");
+            e.printStackTrace();
+        }
+
+        try{
+            Student student = new Student(
+                    "210823104031",
+                    "Ajith",
+                    "ajith@gmail.com",
+                    "9092065178",
+                    1
+            );
+            studentDAO.updateStudent(student);
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
