@@ -101,4 +101,17 @@ public class StudentDAO {
         int rowsAffected = ps.executeUpdate();
         System.out.println("Rows Updated:" + rowsAffected);
     }
+
+    public void deleteStudent(String rollNo) throws SQLException{
+        String sql = """
+                delete from students where roll_no = ? 
+                """;
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql);
+
+        ps.setString(1, rollNo);
+
+        int rowsAffected = ps.executeUpdate();
+        System.out.println("Rows deleted: " + rowsAffected);
+    }
 }

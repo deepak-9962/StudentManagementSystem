@@ -2,6 +2,7 @@ package com.deepak;
 import com.deepak.model.Student;
 import com.deepak.util.DatabaseConnection;
 import com.deepak.dao.StudentDAO;
+import java.util.Scanner;
 import java.sql.*;
 import java.util.List;
 
@@ -10,54 +11,146 @@ public class Main {
     public static void main(String[] args) {
 
         StudentDAO studentDAO = new StudentDAO();
+        System.out.println();
+        boolean running = true;
+        while(running) {
+            System.out.println("===== Student Management System =====");
+            System.out.println("1. Add Student");
+            System.out.println("2. View All Students");
+            System.out.println("3. Find Student");
+            System.out.println("4. Update Student");
+            System.out.println("5. Delete Student");
+            System.out.println("6. Exit");
 
-        try {
-            List<Student> students = studentDAO.getAllStudents();
+            Scanner sc = new Scanner(System.in);
 
-            for (Student s : students){
-                System.out.println(
-                        s.getRollNo()+" | "
-                        + s.getName()+" | "
-                        +s.getEmail()+" | "
-                        +s.getPhoneNo()+" | "
-                        +s.getDepartmentId()
-                );
+            System.out.print("Enter Your Choice: ");
+            int choice = sc.nextInt();
+
+            System.out.println();
+
+            switch (choice) {
+                case 1: {
+                    System.out.println("Add Student selected");
+                    System.out.println();
+                    System.out.print("Enter the Roll Number: ");
+                    String rollNo = sc.next();
+
+                    sc.nextLine();
+
+                    System.out.print("Enter the Name: ");
+                    String name = sc.nextLine();
+
+                    System.out.print("Enter the Email: ");
+                    String email = sc.next();
+
+                    System.out.print("Enter the Phone Number: ");
+                    String phoneNo = sc.next();
+
+                    System.out.print("Enter the Department ID: ");
+                    int departmentId = sc.nextInt();
+
+                    Student student = new Student(
+                            rollNo, name, email, phoneNo, departmentId
+                    );
+
+                    try {
+                        studentDAO.addStudent(student);
+                    } catch (SQLException e) {
+                        System.out.println("Cannot add Student!");
+                        e.printStackTrace();
+                    }
+
+                    break;
+                }
+                case 2:
+                    System.out.println("View All Students selected");
+                    System.out.println();
+                    try {
+                        List<Student> students = studentDAO.getAllStudents();
+
+                        for (Student s : students) {
+                            System.out.println(
+                                    s.getRollNo() + " | " +
+                                            s.getName() + " | " +
+                                            s.getEmail() + " | " +
+                                            s.getPhoneNo() + " | " +
+                                            s.getDepartmentId()
+                            );
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Failed to fetch students!");
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    System.out.println("Find Student selected");
+
+                    System.out.print("Enter the Roll Number of the student: ");
+                    String roll_number = sc.next();
+
+                    try {
+                        Student s = studentDAO.getStudentByRollNo(roll_number);
+                        if (s != null) {
+                            System.out.println(
+                                    s.getRollNo() + " | " +
+                                            s.getName() + " | " +
+                                            s.getEmail() + " | " +
+                                            s.getPhoneNo() + " | " +
+                                            s.getDepartmentId()
+                            );
+                        } else System.out.println("Student Not Found");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 4: {
+                    System.out.println("Update Student selected");
+
+                    System.out.print("Enter the Roll Number: ");
+                    String rollNo = sc.next();
+
+                    sc.nextLine();
+
+                    System.out.print("Enter the Name: ");
+                    String name = sc.nextLine();
+
+                    System.out.print("Enter the Email: ");
+                    String email = sc.next();
+
+                    System.out.print("Enter the Phone Number: ");
+                    String phoneNo = sc.next();
+
+                    System.out.print("Enter the Department ID: ");
+                    int departmentId = sc.nextInt();
+
+                    Student student = new Student(
+                            rollNo, name, email, phoneNo, departmentId
+                    );
+                    try {
+                        studentDAO.updateStudent(student);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case 5: {
+                    System.out.println("Delete Student selected");
+                    System.out.print("Enter the Roll Number: ");
+                    String rollNo = sc.next();
+                    try {
+                        studentDAO.deleteStudent(rollNo);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                }
+                case 6:
+                    System.out.println("Exiting...");
+                    running = false;
             }
-        }catch (SQLException e){
-            System.out.println("Failed to fetch the Student");
-            e.printStackTrace();
-        }
-
-
-        try{
-            Student s = studentDAO.getStudentByRollNo("210823104030");
-            if(s!=null){
-                System.out.println();
-                System.out.println(
-                                s.getRollNo()+" | "
-                                + s.getName()+" | "
-                                +s.getEmail()+" | "
-                                +s.getPhoneNo()+" | "
-                                +s.getDepartmentId()
-                );
-            }
-            else System.out.println("No Student Found");
-        }catch (SQLException e){
-            System.out.println("No Student Found!");
-            e.printStackTrace();
-        }
-
-        try{
-            Student student = new Student(
-                    "210823104031",
-                    "Ajith",
-                    "ajith@gmail.com",
-                    "9092065178",
-                    1
-            );
-            studentDAO.updateStudent(student);
-        }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println();
         }
     }
 }
