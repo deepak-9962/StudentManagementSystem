@@ -26,6 +26,7 @@ public class StudentDAO {
         ps.setInt(5, student.getDepartmentId());
 
         int rowsAffected = ps.executeUpdate();
+        System.out.println("Rows Affected: "+rowsAffected);
     }
 
     public List<Student> getAllStudents() throws SQLException{
@@ -66,9 +67,9 @@ public class StudentDAO {
         ps.setString(1, rollNo);
 
         ResultSet rs = ps.executeQuery();
-
+        Student student;
         if(rs.next()){
-            Student student = new Student(
+                student = new Student(
                     rs.getString("roll_no"),
                     rs.getString("name"),
                     rs.getString("email"),
@@ -102,7 +103,7 @@ public class StudentDAO {
         System.out.println("Rows Updated:" + rowsAffected);
     }
 
-    public void deleteStudent(String rollNo) throws SQLException{
+    public boolean deleteStudent(String rollNo) throws SQLException{
         String sql = """
                 delete from students where roll_no = ? 
                 """;
@@ -112,6 +113,6 @@ public class StudentDAO {
         ps.setString(1, rollNo);
 
         int rowsAffected = ps.executeUpdate();
-        System.out.println("Rows deleted: " + rowsAffected);
+        return rowsAffected > 0;
     }
 }
